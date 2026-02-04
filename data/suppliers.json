@@ -1,0 +1,62 @@
+[
+  {
+    "id": "sup-001",
+    "name": "TechSupply SA",
+    "contact_name": "Carlos Mendez",
+    "email": "carlos@techsupply.cl",
+    "phone": "+56 9 1234 5678",
+    "total_products": 15,
+    "total_stock": 782,
+    "total_valuation": 5890000,
+    "total_sales_30d": 6245680,
+    "avg_margin": 64.8
+  },
+  {
+    "id": "sup-002",
+    "name": "GadgetsPro Chile",
+    "contact_name": "María González",
+    "email": "maria@gadgetspro.cl",
+    "phone": "+56 9 2345 6789",
+    "total_products": 12,
+    "total_stock": 198,
+    "total_valuation": 4250000,
+    "total_sales_30d": 5625180,
+    "avg_margin": 55.2
+  },
+  {
+    "id": "sup-003",
+    "name": "ImportMax SpA",
+    "contact_name": "Roberto Silva",
+    "email": "roberto@importmax.cl",
+    "phone": "+56 9 3456 7890",
+    "total_products": 10,
+    "total_stock": 310,
+    "total_valuation": 5120000,
+    "total_sales_30d": 7236880,
+    "avg_margin": 56.5
+  },
+  {
+    "id": "sup-004",
+    "name": "DirectChina Ltd",
+    "contact_name": "Wei Zhang",
+    "email": "wei@directchina.com",
+    "phone": "+86 138 1234 5678",
+    "total_products": 8,
+    "total_stock": 669,
+    "total_valuation": 2340000,
+    "total_sales_30d": 5934730,
+    "avg_margin": 76.4
+  },
+  {
+    "id": "sup-005",
+    "name": "AudioTech Ltda",
+    "contact_name": "Andrea Pérez",
+    "email": "andrea@audiotech.cl",
+    "phone": "+56 9 4567 8901",
+    "total_products": 5,
+    "total_stock": 134,
+    "total_valuation": 3180000,
+    "total_sales_30d": 5554310,
+    "avg_margin": 56.1
+  }
+]

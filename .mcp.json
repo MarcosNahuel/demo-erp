@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic-ai/mcp-server-filesystem",
+        "D:/OneDrive/GitHub/demo-erp",
+        "D:/OneDrive/GitHub/BAZAR",
+        "D:/OneDrive/GitHub/Nino-Next.js"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-context7"]
+    }
+  }
+}
