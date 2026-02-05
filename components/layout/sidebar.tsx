@@ -14,6 +14,7 @@ import {
   LineChart,
   ChevronLeft,
   ChevronRight,
+  RefreshCw,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,11 @@ const navigation = [
     name: "Forecasting",
     href: "/dashboard/forecasting",
     icon: LineChart,
+  },
+  {
+    name: "Sincronizar",
+    href: "/dashboard/sync",
+    icon: RefreshCw,
   },
 ];
 

@@ -5,26 +5,67 @@ import alertsData from "@/data/alerts.json";
 import type { Product, Supplier, Order, Alert, DashboardKPIs, SalesByChannel, SalesTrend, StockDistribution, LogisticType } from "@/types";
 import { getStockStatus } from "./utils";
 
-// Acceso a datos
-export const products: Product[] = productsData as Product[];
-export const suppliers: Supplier[] = suppliersData as Supplier[];
+// Funciones para obtener datos sincronizados (client-side only)
+function getSyncedProductsFromStorage(): Product[] | null {
+  if (typeof window === "undefined") return null;
+  const stored = localStorage.getItem("demo-erp-synced-products");
+  if (!stored) return null;
+  try {
+    return JSON.parse(stored) as Product[];
+  } catch {
+    return null;
+  }
+}
+
+function getSyncedSuppliersFromStorage(): Supplier[] | null {
+  if (typeof window === "undefined") return null;
+  const stored = localStorage.getItem("demo-erp-synced-suppliers");
+  if (!stored) return null;
+  try {
+    return JSON.parse(stored) as Supplier[];
+  } catch {
+    return null;
+  }
+}
+
+// Datos originales
+const originalProducts: Product[] = productsData as Product[];
+const originalSuppliers: Supplier[] = suppliersData as Supplier[];
+
+// Funciones getter que priorizan datos sincronizados
+export function getProducts(): Product[] {
+  const synced = getSyncedProductsFromStorage();
+  return synced || originalProducts;
+}
+
+export function getSuppliers(): Supplier[] {
+  const synced = getSyncedSuppliersFromStorage();
+  return synced || originalSuppliers;
+}
+
+// Exports para compatibilidad (datos estáticos para SSR)
+export const products: Product[] = originalProducts;
+export const suppliers: Supplier[] = originalSuppliers;
 export const orders: Order[] = ordersData as Order[];
 export const alerts: Alert[] = alertsData as Alert[];
 
 // KPIs del Dashboard
 export function getDashboardKPIs(): DashboardKPIs {
-  const totalProducts = products.length;
-  const totalStock = products.reduce((sum, p) => sum + p.stock_total, 0);
-  const stockValuation = products.reduce((sum, p) => sum + p.stock_total * p.cost, 0);
-  const sales30d = products.reduce((sum, p) => sum + p.sales_amount_30d, 0);
+  const currentProducts = getProducts();
+  const totalProducts = currentProducts.length;
+  const totalStock = currentProducts.reduce((sum, p) => sum + p.stock_total, 0);
+  const stockValuation = currentProducts.reduce((sum, p) => sum + p.stock_total * p.cost, 0);
+  const sales30d = currentProducts.reduce((sum, p) => sum + p.sales_amount_30d, 0);
 
   const paidOrders = orders.filter(o => o.status === "paid");
   const orders30d = paidOrders.length;
   const avgTicket = orders30d > 0 ? sales30d / orders30d : 0;
 
-  const avgMargin = products.reduce((sum, p) => sum + p.margin_percent, 0) / totalProducts;
+  const avgMargin = totalProducts > 0
+    ? currentProducts.reduce((sum, p) => sum + p.margin_percent, 0) / totalProducts
+    : 0;
 
-  const criticalProducts = products.filter(p => {
+  const criticalProducts = currentProducts.filter(p => {
     const status = getStockStatus(p.stock_total, p.sales_30d);
     return status === "critical" || status === "alert";
   }).length;
@@ -100,6 +141,7 @@ export function getSalesTrend(): SalesTrend[] {
 
 // Distribución de stock por estado
 export function getStockDistribution(): StockDistribution[] {
+  const currentProducts = getProducts();
   const distribution: Record<string, number> = {
     critical: 0,
     alert: 0,
@@ -108,12 +150,12 @@ export function getStockDistribution(): StockDistribution[] {
     overstock: 0,
   };
 
-  products.forEach(p => {
+  currentProducts.forEach(p => {
     const status = getStockStatus(p.stock_total, p.sales_30d);
     distribution[status]++;
   });
 
-  const total = products.length;
+  const total = currentProducts.length;
   const labels: Record<string, string> = {
     critical: "Crítico",
     alert: "Alerta",
@@ -125,15 +167,16 @@ export function getStockDistribution(): StockDistribution[] {
   return Object.entries(distribution).map(([status, count]) => ({
     status: labels[status],
     count,
-    percent: (count / total) * 100,
+    percent: total > 0 ? (count / total) * 100 : 0,
   }));
 }
 
 // Productos por categoría
 export function getProductsByCategory() {
+  const currentProducts = getProducts();
   const categories: Record<string, { count: number; stock: number; sales: number }> = {};
 
-  products.forEach(p => {
+  currentProducts.forEach(p => {
     if (!categories[p.category]) {
       categories[p.category] = { count: 0, stock: 0, sales: 0 };
     }
@@ -160,7 +203,8 @@ export function getActiveAlerts() {
 
 // Productos críticos
 export function getCriticalProducts() {
-  return products
+  const currentProducts = getProducts();
+  return currentProducts
     .map(p => ({
       ...p,
       stockStatus: getStockStatus(p.stock_total, p.sales_30d),
@@ -171,12 +215,14 @@ export function getCriticalProducts() {
 
 // Top productos por ventas
 export function getTopProducts(limit: number = 10) {
-  return [...products]
+  const currentProducts = getProducts();
+  return [...currentProducts]
     .sort((a, b) => b.sales_amount_30d - a.sales_amount_30d)
     .slice(0, limit);
 }
 
 // Productos por proveedor
 export function getProductsBySupplier(supplierId: string) {
-  return products.filter(p => p.supplier_id === supplierId);
+  const currentProducts = getProducts();
+  return currentProducts.filter(p => p.supplier_id === supplierId);
 }

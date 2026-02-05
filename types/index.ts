@@ -123,3 +123,35 @@ export interface StockDistribution {
   count: number;
   percent: number;
 }
+
+// Sync Types
+export interface SyncState {
+  lastSync: string | null;
+  sheetUrl: string | null;
+  productsCount: number;
+  suppliersCount: number;
+}
+
+export interface ValidationError {
+  row: number;
+  column: string;
+  message: string;
+}
+
+export interface SheetProduct {
+  sku: string;
+  title: string;
+  price: number;
+  cost: number;
+  stock_full: number;
+  stock_flex?: number;
+  category: string;
+  supplier_name: string;
+}
+
+export interface SheetSupplier {
+  id: string;
+  name: string;
+  contact_name?: string;
+  email?: string;
+}
