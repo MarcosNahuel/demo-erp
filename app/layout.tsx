@@ -6,8 +6,8 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Demo ERP - TRAID Agency",
-  description: "Dashboard de inventario e-commerce - Demo TRAID Agency",
+  title: "TRAID Manager - Inventory Dashboard",
+  description: "Dashboard de inventario e-commerce - TRAID Agency",
   icons: {
     icon: "/favicon.ico",
   },

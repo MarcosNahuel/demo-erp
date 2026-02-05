@@ -1,4 +1,4 @@
-# Demo ERP - TRAID Agency
+# TRAID Manager - Inventory Dashboard
 
 ## Propósito
 

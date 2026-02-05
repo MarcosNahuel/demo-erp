@@ -87,7 +87,7 @@ export function Sidebar() {
                 <span className="text-sm font-bold text-white">T</span>
               </div>
               <span className="text-lg font-semibold text-white">
-                TRAID<span className="text-primary-400">ERP</span>
+                TRAID<span className="text-primary-400">MANAGER</span>
               </span>
             </Link>
           )}
